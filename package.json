@@ -1,0 +1,29 @@
+{
+  "name": "elite-entries",
+  "version": "0.0.1",
+  "description": "Elite Entries trade and account functions",
+  "author": "George Abreu Jr. <george8794@gmail.com> (https://georgeanthony.net/)",
+  "license": "GPL-3.0-only",
+  "homepage": "https://github.com/elitentries/api#readme",
+  "main": "dist/index.js",
+  "scripts": {
+    "prepare": "tsc -d"
+  },
+  "files": [
+    "dist/",
+    "LICENSE",
+    "README.md",
+    "package.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elitentries/api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/elitentries/api/issues"
+  },
+  "dependencies": {
+    "@alpacahq/alpaca-trade-api": "^3.0.1",
+    "typescript": "^5.4.5"
+  }
+}
