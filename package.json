@@ -9,6 +9,7 @@
   "scripts": {
     "prepare": "tsc -d"
   },
+  "prepack": "tsc -d",
   "files": [
     "dist/",
     "LICENSE",

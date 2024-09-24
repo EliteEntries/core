@@ -220,3 +220,41 @@ export async function getAlpacaLatestCandles(
   }
   return bars;
 }
+
+/** Get Latest Stock Candles
+ * Get latest stock candles from alpaca
+ * @param {reqData} data
+ * @return {any[]} response from alpaca
+ */
+export async function getAlpacaLatestStockCandles(data:any): Promise<any> {
+  let {key, secret, symbols, paper, limit, start, end, timeframe}: any = data;
+  if (!symbols) throw new Error("At least one symbol required");
+  if (!timeframe) timeframe = '1day';
+  if (!Array.isArray(symbols)) symbols = [symbols]
+  symbols = (symbols as string[]).join(',');
+  limit = limit || 1;
+  start = start || new Date(new Date().setDate(new Date().getDate() - 365)).toISOString();
+  end = end || null;
+  const baseUrl = 'https://data.alpaca.markets/v2/stocks/bars?&adjustment=raw&feed=iex&sort=desc';
+  let url = `${baseUrl}&symbols=${symbols}&limit=${limit}&start=${start}&timeframe=${timeframe}`;
+  if (end) url += `&end=${end}`;
+  
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      'APCA-API-KEY-ID': key || process.env.ALPACA_KEY,
+      'APCA-API-SECRET-KEY': secret || process.env.ALPACA_SECRET
+    }
+  }; 
+
+  try {
+    const res = await fetch(url,options);
+    const json = await res.json();
+    return json;
+  } catch (e) {
+    console.error('error:', e);
+    return e;
+  }
+
+}
