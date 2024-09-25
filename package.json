@@ -6,9 +6,6 @@
   "license": "GPL-3.0-only",
   "homepage": "https://github.com/elitentries/api#readme",
   "main": "dist/index.js",
-  "scripts": {
-    "prepare": "tsc -d"
-  },
   "prepack": "tsc -d",
   "files": [
     "dist/",
@@ -26,5 +23,8 @@
   "dependencies": {
     "@alpacahq/alpaca-trade-api": "^3.0.1",
     "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.0"
   }
 }
