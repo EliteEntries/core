@@ -138,30 +138,6 @@ export async function getAlpacaPositions(
   return resp;
 }
 
-/** Get Prices
- * Get prices from alpaca
- * @param {reqData} data
- * @return {Promise<any>} response from alpaca
- */
-export async function getAlpacaPrices(
-  data: any):Promise<any> {
-  let {key, secret, symbols, paper}: any = data;
-
-  if (!symbols) throw new Error("At least one symbol required");
-
-  // create alpaca instance
-  const alpaca = new Alpaca({
-    keyId: key || process.env.ALPACA_KEY,
-    secretKey: secret || process.env.ALPACA_SECRET,
-    paper: paper || false,
-  });
-
-  // get prices from alpaca
-  if (!Array.isArray(symbols)) symbols = [symbols]
-  const resp = await alpaca.getLatestTrades(symbols)
-  return resp;
-}
-
 /** Get Candles
  * Get candles from alpaca
  * @param {reqData} data
@@ -256,5 +232,34 @@ export async function getAlpacaLatestStockCandles(data:any): Promise<any> {
     console.error('error:', e);
     return e;
   }
+}
 
+/** Get Stock Prices
+ * Get prices from alpaca
+ * @param {reqData} data
+ * @return {Promise<any>} response from alpaca
+ */
+export async function getAlpacaPrices(
+  data: any):Promise<any> {
+  let {key, secret, symbols, paper}: any = data;
+  if (!symbols) throw new Error("At least one symbol required");
+  if (!Array.isArray(symbols)) symbols = [symbols]
+  const baseUrl = `https://data.alpaca.markets/v2/stocks/trades/latest?feed=iex&symbols=`
+  let url = baseUrl + symbols.join(',');
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      'APCA-API-KEY-ID': key || process.env.ALPACA_KEY,
+      'APCA-API-SECRET-KEY': secret || process.env.ALPACA_SECRET
+    }
+  };
+  try {
+    const res = await fetch(url,options);
+    const json = await res.json();
+    return json;
+  } catch (e) {
+    console.error('error:', e);
+    return e;
+  }
 }
